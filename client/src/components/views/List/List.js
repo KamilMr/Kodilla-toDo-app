@@ -2,15 +2,20 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import styles from './List.module.scss';
 import PropTypes from 'prop-types';
+import Form from 'react-bootstrap/Form';
 
 const removeTask = (params) => {
-  console.log('Hey');
+  console.log('remove task');
+};
+const addTask = (params) => {
+  console.log('add Task');
 };
 
 const List = (props) => {
-  props.socket.on('newTask', () => {
-    console.log('test');
-  });
+  // props.socket.on('newTask', () => {
+  //   console.log('test');
+  // });
+  console.log(props);
   return ( 
     <div id="task-list">
       {/* task one */}
@@ -22,11 +27,21 @@ const List = (props) => {
             </ul>
           </div>
           <div className={styles.button}>
-            <Button variant='success' onClick={removeTask}>Remove</Button>
+            <Button variant='danger' onClick={removeTask}>Remove</Button>
           </div>
         </div>
+        
           
       ))}
+      <Form className={styles.container_basic}>
+        <Form.Group controlId="formBasicEmail" className={styles.left_item}>
+          <Form.Control type="email" placeholder="Add task" />
+        </Form.Group>
+        <div className={styles.button}>
+          <Button variant="primary" onClick={addTask}>Add Task</Button>
+        </div>
+      </Form>
+      
     </div>
   );
 };

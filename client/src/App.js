@@ -3,28 +3,33 @@ import MainLayout from './components/layout/MainLayout/MainLayout';
 import './App.scss';
 import io  from 'socket.io-client';
 
-const ENDPOINT = 'http://localhost:3000/';
+const ENDPOINT = 'http://localhost:8000';
 
-const socket = io(ENDPOINT);
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = { 
       tasks: [
-        {id: 1, value: 'to do something'},
-        {id: 2, value: 'to do something'},
-        {id: 3, value: 'to do something'},
+        {id: 1, value: 'Buy Bread'},
+        {id: 2, value: 'clean room'},
+        {id: 3, value: 'listen to music'},
   
       ],
     };
   }
-
+  
+  
   componentDidMount() {
-    
+    this.socket = io(ENDPOINT);
+    this.socket.on('newTask', () => {
+      console.log('Hello');
+    });
   }
+
+  
   render() { 
     return ( 
-      <MainLayout tasks={this.state.tasks} socket={socket}/>
+      <MainLayout tasks={this.state.tasks}/>
     );
   }
 }
