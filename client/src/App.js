@@ -3,6 +3,7 @@ import MainLayout from './components/layout/MainLayout/MainLayout';
 import './App.scss';
 import io  from 'socket.io-client';
 
+
 const ENDPOINT = 'http://localhost:8000';
 
 class App extends Component {
@@ -13,11 +14,16 @@ class App extends Component {
         {id: 1, value: 'Buy Bread'},
         {id: 2, value: 'clean room'},
         {id: 3, value: 'listen to music'},
-  
       ],
+      data: null,
     };
   }
   
+  updateState =(childData) => {
+    this.setState({
+      tasks: childData,
+    });
+  }
   
   componentDidMount() {
     this.socket = io(ENDPOINT);
@@ -27,9 +33,12 @@ class App extends Component {
   }
 
   
+  
   render() { 
     return ( 
-      <MainLayout tasks={this.state.tasks}/>
+      <div>
+        <MainLayout tasks={this.state.tasks} store={this.state} updateState = {this.updateState}/>
+      </div>
     );
   }
 }

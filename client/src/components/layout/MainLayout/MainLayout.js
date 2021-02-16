@@ -5,11 +5,11 @@ import PropTypes from 'prop-types';
 import styles from './MainLayout.module.scss';
 
 const MainLayout = (props) => {
-  console.log(props);
+  // console.log(props);
   return ( 
     <div>
       <Header />
-      <List tasks={props.tasks} socket={props.socket}/>
+      <List tasks={props.tasks} updateState={props.updateState}/>
     </div>
   );
 };
@@ -17,6 +17,7 @@ const MainLayout = (props) => {
 MainLayout.propTypes = {
   socket: PropTypes.object,
   tasks: PropTypes.array,
+  updateState: PropTypes.func,
 };
 
 export default MainLayout;
