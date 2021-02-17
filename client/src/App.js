@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import MainLayout from './components/layout/MainLayout/MainLayout';
 import './App.scss';
 import io  from 'socket.io-client';
+import uuid from 'react-uuid';
 
 
 const ENDPOINT = 'http://localhost:8000';
@@ -11,26 +12,29 @@ class App extends Component {
     super(props);
     this.state = { 
       tasks: [
-        {id: 1, value: 'Buy Bread'},
-        {id: 2, value: 'clean room'},
-        {id: 3, value: 'listen to music'},
+        {id: uuid(), value: 'Hello'},
       ],
-      data: null,
     };
   }
   
-  updateState =(childData) => {
-    this.setState({
-      tasks: childData,
-    });
+  async componentDidMount() {
+    this.socket = io(ENDPOINT);
+    this.socket.emit('newTask', this.state.tasks);
+    this.socket.on('updateData', (newTasks) => this.setState({tasks: [...this.state.tasks, ...newTasks]}));
+    this.socket.on('removeTask', (newTasks) => this.setState({tasks: [...newTasks]}));
   }
   
-  componentDidMount() {
-    this.socket = io(ENDPOINT);
-    this.socket.on('newTask', () => {
-      console.log('Hello');
-    });
+  updateState =(newTask, removedTaskId) => {
+    if(newTask != null){
+      this.setState({tasks: [...this.state.tasks, ...newTask]});
+      this.socket.emit('newTask',newTask);
+    }else {
+      this.setState({tasks: [...this.state.tasks]});
+      this.socket.emit('removeTask',removedTaskId);
+    }
   }
+  
+
 
   
   

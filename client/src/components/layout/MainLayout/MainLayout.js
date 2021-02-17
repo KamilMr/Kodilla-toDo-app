@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import styles from './MainLayout.module.scss';
 
 const MainLayout = (props) => {
-  // console.log(props);
   return ( 
     <div>
       <Header />

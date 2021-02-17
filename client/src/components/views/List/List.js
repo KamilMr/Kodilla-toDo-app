@@ -10,13 +10,10 @@ import uuid from 'react-uuid';
 const List = ({tasks, updateState}) => {
   
   const removeTask = (taskId) => {
-    // event.preventDefault();
-    // console.log(taskId);
-    const arrayTask = [...tasks];
-    // console.log(arrayTask);
+    const arrayTask = tasks;
     let index = arrayTask.map(task => task.id).indexOf(taskId);
     arrayTask.splice(index, 1);
-    updateState([...arrayTask]);
+    updateState(null, taskId);
 
     
     
@@ -28,12 +25,10 @@ const List = ({tasks, updateState}) => {
     if(data.value === ''){
       alert('Task is empty');
     } else{
-      updateState([...tasks, {id:uuid(), value: data.value}]);
+      updateState([{id:uuid(), value: data.value}]);
       data.value = '';
-
     }
   };
-
   return ( 
     <div id="task-list">
       {/* task one */}

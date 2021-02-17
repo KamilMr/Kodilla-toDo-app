@@ -1,3 +1,4 @@
+const { clear } = require('console');
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -8,10 +9,8 @@ const port = '8000';
 
 app.use(express.static(path.join(__dirname, '/client/src')));
 
-const task = [
-    {id:10, value: 'read book'}
-];
-
+const tasks = [];
+const users = [];
   
 app.get('/', (req,res) => {
     res.send('All is Good').status(200);
@@ -29,10 +28,17 @@ app.use((req, res) => {
 const io = socket(server);
 
 io.on('connection', (socket) => {
-    console.log('socket id ' + socket.id + 'has arrived');
-    socket.emit('update Task', task);
+    socket.emit('updateData', tasks);
+
+
     socket.on('newTask', (newTask) => {
-        console.log('New Task');
-        socket.broadcast.emit('newTask', console.log('Task Arrived'))
+        tasks.push(...newTask);
+        socket.broadcast.emit('updateData', newTask);
     })
+    socket.on('removeTask', (taskId) => {
+        let index = tasks.map(task => task.id).indexOf(taskId);
+        tasks.splice(index, 1);
+        socket.broadcast.emit('removeTask', tasks);
+    })
+    socket.on('disconnect', () => console.log(socket.id + ' has left'))
 })
